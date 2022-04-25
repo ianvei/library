@@ -14,7 +14,15 @@
             <h1>Library</h1>
         </div>
         <div class="content">
-            <div class="library"></div>
+            <div class="library">
+                <div class="library-book">
+                    <div class="title">Title</div>
+                    <div class="author">Author</div>
+                    <div class="pageNo">23</div>
+                    <button class="read">Read</button>
+                    <button class="delete">Delete</button>
+                </div>
+            </div>
             <div class="bottom">
                 <button class="open-button" onclick="openForm()"><h1>+</h1></button>
             </div>
@@ -22,20 +30,20 @@
     </div>
     <div class="overlay" id="page-overlay">
         <div class="form-popup" id="myForm">
-            <form action="/action_page.php" class="form-container">
+            <form class="form-container" id="form1">
               <h1>Book</h1>
           
               <label for="title"><b>Title</b></label>
-              <input type="text" placeholder="Enter Title" name="title" required>
+              <input type="text" placeholder="Enter Title" name="title" id="title" required>
           
               <label for="author"><b>Author</b></label>
-              <input type="text" placeholder="Enter Author" name="author" required>
+              <input type="text" placeholder="Enter Author" name="author" id="author" required>
 
               <label for="pages"><b>Pages Read</b></label>
-              <input type="number" placeholder="0" name="pages" required>
+              <input type="number" placeholder="0" name="pages" id="pageNo" required>
               
               <label for="y-n"><b>Finished The Book?</b></label>
-              <select id="y-n" name="y-n">
+              <select id="y-n" name="y-n" id="read">
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
               </select>

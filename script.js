@@ -19,3 +19,37 @@ function openForm() {
   function closeForm() {
     document.getElementById("page-overlay").style.display = "none";
   }
+
+let myLibrary = []
+
+// Reset form values to their placeholder
+function clearValues(){
+  const title = document.getElementById('title');
+  const author = document.getElementById('author');
+  const pageNo = document.getElementById('pageNo');
+  const read = document.getElementById('read');
+  title.value = ''
+  author.value = ''
+  pageNo.value = ''
+}
+let bookCounter = 0
+// get form results, create object, push to library array
+document.getElementById('myForm').onsubmit = function() {
+  bookCounter++
+  let form = document.querySelector('#form1');
+  let data = new FormData(form);
+
+  let obj = {};
+  for (let [key, value] of data) {
+    obj[key] = value;
+    obj["bookIndex"] = bookCounter
+  }
+
+  myLibrary.push(obj);
+  console.log(myLibrary);
+  clearValues();
+  return false; // page doesnt reload on form submission
+}
+
+
+
