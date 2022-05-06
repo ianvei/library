@@ -1,19 +1,6 @@
-// function Book(title, author, pages, read) {
-//     this.title = title
-//     this.author = author
-//     this.pages = pages
-//     this.read = read
-//     this.parker = function() {
-//         return(`${this.title} by ${this.author}, ${this.pages} pages, ${this.read}`)
-//     }
-// }
-
-// const theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", "295", "not read yet")
-
-// console.log(theHobbit.parker())
-
 function openForm() {
     document.getElementById("page-overlay").style.display = "flex";
+    document.getElementById("temp-pop-up").style.display = "none";
   }
   
   function closeForm() {
@@ -33,58 +20,68 @@ function clearValues(){
   pageNo.value = '';
 }
 
+// searchID = `${classNameSplit[0]}` + 
+
 function updateText (obj){
   obj.notAdded = false
-  // const updateTitle = document.getElementByClass('library');
+  console.table(obj)
   console.log('this is inside the funcion');
   console.log(obj['title']);
 
   const newBook = document.createElement('div');
-  // newBook.classList.add(`library-book ${obj["bookIndex"]}`)
-  // let libraryNumber = "library-book" + " " + 
-  // console.log(libraryNumber)
-  // newBook.classList.add(`library-book ${obj["bookIndex"]}`)
+ 
   newBook.classList.add("library-book");
-  newBook.classList.add(`${obj["bookIndex"]}`);
+  classNameSplit = obj["title"].split(" ")[0]
+  bookDomIndex = obj["bookIndex"]
+  bookSearchQuery = classNameSplit + bookDomIndex
+  console.log(bookSearchQuery)
+  newBook.classList.add(bookSearchQuery);
 
   const bookTitle = document.createElement('div');
-  // const bookAuthor = document.createElement('div');
-  // const bookPageNo = document.createElement('div');
-  // const bookRead = document.createElement('button');
-  // const bookDelete = document.createElement('button');
+  bookTitle.classList.add('title');
+  bookTitle.textContent = obj['title'];
 
-  // bookTitle.classList.add("title");
+  const bookAuthor = document.createElement('div');
+  bookAuthor.classList.add('author');
+  bookAuthor.textContent = obj['author'];
 
-  // bookAuthor.classList.add("author");
-  // bookPageNo.classList.add("pageNo");
-  // bookRead.classList.add("read");
-  // bookDelete.classList.add("delete");
+  const bookNumber = document.createElement('div');
+  bookNumber.classList.add('pageNo');
+  bookNumber.textContent = obj['pages'];
+  console.log(obj["pages"])
 
-  // document.getElementbyID('library-book').appendChild(bookTitle);
-  // document.getElementbyID('library-book').appendChild(bookAuthor);
-  // document.getElementbyID('library-book').appendChild(bookPageNo);
-  // document.getElementbyID('library-book').appendChild(bookRead);
-  // document.getElementbyID('library-book').appendChild(bookDelete);
-  // document.querySelector(`.${obj["bookIndex"].toString()}`)
+  // add onclick later so this can be toggled
+  const bookRead = document.createElement('button');
+  bookRead.classList.add('read');
+  bookRead.setAttribute('onclick', 'readText("'+bookSearchQuery+'")')
+  if (obj['y-n'] === 'no'){
+    bookRead.textContent = "Not Read";
+  }
+  else if (obj['y-n'] === 'yes'){
+    bookRead.textContent = "Read";
+  }
+  
+  const bookDelete = document.createElement('button');
+  bookDelete.classList.add('delete');
+  // bookDelete.classList.add(`${obj["title"]}`);
+  bookDelete.textContent = "Delete";
+  // functionArgs = obj['title']
+  // bookDelete.setAttribute("onclick", `deleteBook(${obj['title'].toString()})`);
+
+  bookDelete.setAttribute('onclick', 'deleteBook("'+bookSearchQuery+'")');
+
+
   document.getElementById('addhere').appendChild(newBook);
-  const individualBook = document.querySelector(`div[class="${obj.bookIndex}"]`);
-  individualBook.appendChild(bookTitle)
-  /* <div class="title">Title</div>
-  <div class="author">Author</div>
-  <div class="pageNo">23</div>
-  <button class="read">Read</button>
-  <button class="delete">Delete</button> */
+  
+  const individualBook = document.querySelector(`.${bookSearchQuery}`);
+ 
+  individualBook.appendChild(bookTitle);
+  individualBook.appendChild(bookAuthor);
+  individualBook.appendChild(bookNumber);
+  individualBook.appendChild(bookRead);
+  individualBook.appendChild(bookDelete);
 
   console.log('book created');
- 
-  console.log('book added');
-  // document.getElementById
-  // updateTitle.textContent = obj["title"];
-  // console.log('hello')
-  // // const updateAuthor = document.getElementById('author');
-  // // const updatePageNo = document.getElementById('pageNo');
-  // // const updateRead = document.getElementById('read');
-
 
   return false;  
 }
@@ -102,7 +99,7 @@ document.getElementById('myForm').onsubmit = function() {
     obj[key] = value;
     obj["bookIndex"] = bookCounter;
     obj["displayFlag"] = true;
-    obj["notAdded"] = true
+    obj["notAdded"] = true;
   }
 
   // updateText(obj);
@@ -111,10 +108,7 @@ document.getElementById('myForm').onsubmit = function() {
   
   for (let obj of myLibrary) {
     if (obj.displayFlag === true && obj.notAdded === true) {
-      updateText(obj)
-    }
-    else if (obj.displayFlag === false) {
-      // function to delete object and remove from DOM
+      updateText(obj);
     }
   }
 
@@ -122,6 +116,30 @@ document.getElementById('myForm').onsubmit = function() {
   return false; // page doesnt reload on form submission
 }
 
+function deleteBook(title){
+  const deleteButton = document.querySelector(".library-book" + "." + `${title}`);
+  console.log(title);
+  console.log('deleting');
+  console.info(deleteButton);
+  for (let obj of myLibrary){
+    if (obj["title"] === title) {
+      obj.displayFlag = false;
+      console.log(obj);
+    }
+  }
+  deleteButton.remove();
+  // console.log(`button pressed title is ${title}`)
+}
+
+function readText(book){
+  console.log(book)
+  const readButton = document.querySelector(`.${book} > .read`);
+  if (readButton.textContent === "Read"){
+    readButton.textContent = "Not Read";
+  }
+  else {
+    readButton.textContent = "Read";
+  }
+}
 
 
-// idea: loop through array, for i of myLibrary, if "display" = True, display it, if not (flag set to false) remove it
